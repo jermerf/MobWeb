@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
+    integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
+    crossorigin="anonymous"></script>
+  <title>Databases</title>
+</head>
+
+<body>
+  <div id="app">
+    <div>
+      <label>
+        <input type="radio" name="db" value="mysql" v-model="database">MySQL
+      </label>
+      <br>
+      <label>
+        <input type="radio" name="db" value="mongo" v-model="database">Mongo
+      </label>
+      <br>
+      <label>
+        <input type="radio" name="db" value="mongoose" v-model="database">Mongoose
+      </label>
+    </div>
+    <div>
+      <input v-model="username" />
+      <input v-model="password" type="password" />
+      <button @click="register">Register</button>
+      <button @click="login">Login</button>
+    </div>
+    <div>
+      <h4>RESPONSE</h4>
+      <pre>{{response}}</pre>
+    </div>
+  </div>
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+        username: "jermerf",
+        password: "puppies",
+        database: "mysql",
+        response: ""
+      },
+      methods: {
+        async register() {
+          var { username, password } = this
+          try {
+            this.response = (await axios.post(`/${this.database}/register`, { username, password })).data
+          } catch (err) {
+            this.response = err
+          }
+
+        },
+        async login() {
+          var { username, password } = this
+          try {
+            this.response = (await axios.post(`/${this.database}/login`, { username, password })).data
+          } catch (err) {
+            this.response = err
+          }
+        }
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>
