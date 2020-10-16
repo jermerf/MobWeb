@@ -21,7 +21,7 @@
       "skipFiles": [
         "<node_internals>/**"
       ],
-      "program": "${workspaceFolder}\\05-Databases\\routes\\mysql.js"
+      "program": "${workspaceFolder}\\06-NoteApp\\sampletoken.js"
     }
   ]
 }

@@ -1,5 +1,5 @@
 const { Schema, model } = require('mongoose')
-const pass = require('../utils/pass.js')
+const bcrypt = require('bcrypt')
 
 const UserSchema = new Schema({
   username: { type: String, unique: true, index: true },
@@ -12,12 +12,13 @@ const UserSchema = new Schema({
 
 UserSchema.pre('save', function (next) {
   if (!this.isModified('password')) return next()
-  this.password = pass.hash(this.password)
+  var salt = bcrypt.genSaltSync(10)
+  this.password = bcrypt.hashSync(this.password, salt)
   return next()
 })
 
 UserSchema.methods.authenticate = function (password) {
-  return pass.verify(password, this.password)
+  return bcrypt.compareSync(password, this.password)
 }
 
 const User = model("User", UserSchema)

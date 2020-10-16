@@ -5,7 +5,7 @@ const pass = require("../utils/pass.js")
 const MONGO_URL = "mongodb://localhost:27017"
 
 var db = null
-const mongo = MongoClient.connect(MONGO_URL, { useUnifiedTopology: true })
+MongoClient.connect(MONGO_URL, { useUnifiedTopology: true })
   .then(client => {
     db = client.db("mobweb")
   })

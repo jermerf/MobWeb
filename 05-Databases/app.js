@@ -10,6 +10,7 @@ const app = express()
 // Needed for Axios
 app.use(bodyParser.json())
 
+// Middleware to log Request
 app.use((req, res, next) => {
   next()
   console.log(`URL: ${req.url}`)

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/0.20.0/axios.min.js"
+    integrity="sha512-quHCp3WbBNkwLfYUMd+KwBAgpVukJu5MncuQaWXgCrfgcxCJAq/fo+oqrRKOj+UKEmyMCG3tb8RB63W+EmrOBg=="
+    crossorigin="anonymous"></script>
+  <title>Note App</title>
+  <style>
+    .note h4 {
+      background-color: coral;
+    }
+
+    .note {
+      border: 2px solid grey;
+      margin: 2px;
+      padding: 5px;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="app">
+    <div v-if="!user.loggedIn">
+      <input v-model="loginData.username" />
+      <input v-model="loginData.password" type="password" />
+      <button @click="register">Register</button>
+      <button @click="login">Login</button>
+    </div>
+    <div v-else>
+      <h1>{{user.username}}</h1>
+      <input v-model="note.content" />
+      <button @click="addNote">Add</button>
+      <button @click="getNotes">Get Notes</button>
+      <div v-for="n in note.list" :key="n._id" class="note">
+        <h4>{{n.content}}</h4>
+        {{n.username}}
+      </div>
+    </div>
+
+    <div>
+      <h4>RESPONSE</h4>
+      <pre>{{response}}</pre>
+    </div>
+  </div>
+  <script>
+    var app = new Vue({
+      el: "#app",
+      data: {
+        loginData: {
+          username: "jermerf",
+          password: "puppies"
+        },
+        user: {
+          loggedIn: false,
+          username: ""
+        },
+        note: {
+          content: "",
+          newNote: null,
+          list: []
+        },
+        response: ""
+      },
+      methods: {
+        async register() {
+          var { username, password } = this.loginData
+          try {
+            var res = (await axios.post(`/register`, { username, password })).data
+            if (res.success) {
+              this.loginSuccess(res.username)
+            }
+            // Debug, so we can see response
+            this.response = res
+          } catch (err) {
+            this.response = err
+          }
+
+        },
+        async login() {
+          var { username, password } = this.loginData
+          try {
+            var res = (await axios.post(`/login`, { username, password })).data
+            if (res.success) {
+              this.loginSuccess(res.username)
+            }
+            // Debug, so we can see response
+            this.response = res
+          } catch (err) {
+            this.response = err
+          }
+        },
+        loginSuccess(username) {
+          this.user.loggedIn = true
+          this.user.username = username
+        },
+        async addNote() {
+          var { content } = this.note
+          this.note.newNote = (await axios.post('/note/add', { content })).data
+          this.response = this.note.newNote
+        },
+        async getNotes() {
+          this.note.list = (await axios.get('/note/')).data
+          this.response = this.note.list
+        }
+      }
+    })
+
+
+  </script>
+</body>
+
+</html>
