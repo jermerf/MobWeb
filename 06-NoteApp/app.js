@@ -8,7 +8,7 @@ const user = require('./routers/user.js')
 const needsAuth = require('./routers/needsAuth.js')
 const notes = require('./routers/notes.js')
 
-const PORT = 8080
+const PORT = 3000
 
 var app = express()
 
