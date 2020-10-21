@@ -5,6 +5,16 @@
   "version": "0.2.0",
   "configurations": [
     {
+      "name": "Launch Program",
+      "program": "${workspaceFolder}/practice/ttt.js",
+      "request": "launch",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "pwa-node",
+      "console": "integratedTerminal"
+    },
+    {
       "name": "Attach",
       "port": 9229,
       "request": "attach",
@@ -13,15 +23,6 @@
         "<node_internals>/**"
       ],
       "type": "pwa-node"
-    },
-    {
-      "type": "node",
-      "request": "launch",
-      "name": "Launch Program",
-      "skipFiles": [
-        "<node_internals>/**"
-      ],
-      "program": "${workspaceFolder}\\06-NoteApp\\sampletoken.js"
     }
   ]
 }
